@@ -95,7 +95,7 @@ body {
   color: #fff;
 }
 .hero {
-  background: url('/public/f2.jpg') no-repeat center center / cover; /* Оновлений стиль для фону */
+  background: url('/public/f2.jpg') no-repeat center center / cover; 
   height: 60vh;
   display: flex;
   align-items: center;

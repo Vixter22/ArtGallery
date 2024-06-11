@@ -59,8 +59,8 @@ export default {
 
 <style>
 body {
-  background-color: #111; /* Змінюємо фон сторінки */
-  color: #fff; /* Змінюємо колір тексту */
+  background-color: #111; 
+  color: #fff; 
   margin: 0;
   font-family: Arial, sans-serif;
 }

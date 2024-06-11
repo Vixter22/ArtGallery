@@ -45,7 +45,7 @@ export default {
 
 <style>
 footer {
-  background: #000; /* Чорний фон */
+  background: #000; 
   color: #fff;
   padding: 1rem 0;
   width: 100%;
@@ -72,8 +72,8 @@ footer {
 }
 .logo {
   margin-right: 1rem;
-  width: 50px; /* Встановлюємо ширину логотипу */
-  height: 50px; /* Встановлюємо висоту логотипу */
+  width: 50px; 
+  height: 50px; 
 }
 .site-info {
   text-align: left;
@@ -81,14 +81,14 @@ footer {
 .site-info h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: #fff; /* Назва сайту */
+  color: #fff; 
 }
 .text-muted {
-  color: #aaa; /* Тон темніший для всього іншого тексту */
+  color: #aaa; 
 }
 .contact-info {
   text-align: left;
-  margin-left: 3 rem; /* Вирівнювання контактної інформації */
+  margin-left: 3 rem; 
 }
 .footer-center, .footer-right {
   text-align: left;
@@ -96,7 +96,7 @@ footer {
 .footer-center h2, .footer-right h2 {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  color: #aaa; /* Тон темніший для заголовків */
+  color: #aaa; 
 }
 .footer-center ul, .footer-right ul {
   list-style: none;
@@ -109,11 +109,11 @@ footer {
 .footer-center a, .footer-right a {
   color: #aaa;
   text-decoration: none;
-  transition: color 0.5s; /* Додавання плавного переходу кольору */
+  transition: color 0.5s; 
 }
 .footer-center a:hover, .footer-right a:hover {
-  color: #ff6600; /* Оранжевий колір при наведенні */
-  text-decoration: none; /* Відсутність підкреслення при наведенні */
+  color: #ff6600; 
+  text-decoration: none; 
 }
 .footer-bottom {
   margin-top: 1rem;

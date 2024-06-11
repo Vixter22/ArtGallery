@@ -63,7 +63,7 @@ nav {
 }
 .navbar-left h1 {
   margin: 0;
-  padding-left: 2rem; /* Доданий відступ для назви зліва */
+  padding-left: 2rem;
   color: #fff;
   font-size: 1.5rem;
 }
@@ -76,7 +76,7 @@ nav {
 }
 .navbar-right ul li {
   margin: 0 1rem;
-  position: relative; /* Додано для правильного позиціонування dropdown */
+  position: relative;
 }
 .navbar-right ul li a {
   color: #fff;
@@ -90,12 +90,12 @@ nav {
   border-radius: 5px;
 }
 .dropdown-content {
-  display: none; /* Початково приховано */
+  display: none; 
   position: absolute;
-  background-color: #111; /* Темніший фон для списку */
+  background-color: #111; 
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  min-width: 160px; /* Зменшено ширину списку */
+  min-width: 160px; 
   padding: 0;
   margin: 0;
   list-style: none;
@@ -104,17 +104,17 @@ nav {
   margin: 0;
 }
 .dropdown-content li a {
-  padding: 0.5rem 1rem; /* Зменшено padding */
+  padding: 0.5rem 1rem; 
   display: block;
   color: #fff;
   text-decoration: none;
-  background-color: #111; /* Темніший фон для елементів списку */
-  text-align: left; /* Вирівнювання по лівій стороні */
+  background-color: #111;
+  text-align: left; 
 }
 .dropdown-content li a:hover {
-  background-color: #222; /* Світліший фон при наведенні */
+  background-color: #222; 
 }
 .dropdown:hover .dropdown-content {
-  display: block; /* Показати при наведенні */
+  display: block; 
 }
 </style>
