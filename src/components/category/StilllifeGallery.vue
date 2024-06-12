@@ -2,7 +2,7 @@
   <div class="gallery-container">
     <h1 id="Land">Натюрморт</h1>
     <div v-if="paintings.length" class="paintings-grid">
-      <div v-for="painting in paintings" :key="painting.id" class="painting">
+      <div v-for="painting in paintings" :key="painting.id" class="painting" @click="goToPaintingDetail(painting.id)">
         <img :src="painting.image" :alt="painting.title">
         <div class="painting-info">
           <h2>{{ painting.title }}</h2>
@@ -39,6 +39,9 @@ export default {
         .catch(error => {
           console.error('Error fetching paintings:', error);
         });
+    },
+    goToPaintingDetail(id) {
+      this.$router.push({ name: 'PaintingDetail', params: { id } });
     }
   }
 }

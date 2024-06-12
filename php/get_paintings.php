@@ -15,25 +15,48 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+// Перевіряємо наявність параметра id або category
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
-// Виконуємо запит до бази даних
-$sql = "SELECT * FROM paintings WHERE category='$category'";
-$result = $conn->query($sql);
+$response = array();
 
-$paintings = array();
-if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
+if ($id) {
+  // Виконуємо запит до бази даних для отримання картини за ID
+  $sql = "SELECT * FROM paintings WHERE id = $id";
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0) {
+    $response = $result->fetch_assoc();
     // Додаємо повний шлях до зображень
-    $row['image'] = 'http://localhost/artgallery/public' . $row['image'];
-    $paintings[] = $row;
+    $response['image'] = 'http://localhost/artgallery/public' . $response['image'];
+  } else {
+    error_log("No painting found with id: " . $id);
+    $response['error'] = "No painting found";
   }
+} elseif ($category) {
+  // Виконуємо запит до бази даних для отримання картин за категорією
+  $sql = "SELECT * FROM paintings WHERE category='$category'";
+  $result = $conn->query($sql);
+
+  $paintings = array();
+  if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+      // Додаємо повний шлях до зображень
+      $row['image'] = 'http://localhost/artgallery/public' . $row['image'];
+      $paintings[] = $row;
+    }
+  } else {
+    error_log("No paintings found for category: " . $category);
+  }
+
+  $response = $paintings;
 } else {
-  error_log("No paintings found for category: " . $category);
+  $response['error'] = "Invalid request";
 }
 
 header('Content-Type: application/json');
-echo json_encode($paintings);
+echo json_encode($response);
 
 $conn->close();
 ?>
