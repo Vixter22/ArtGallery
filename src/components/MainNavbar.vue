@@ -10,10 +10,10 @@
           <li @mouseover="showDropdown" @mouseleave="hideDropdown" class="dropdown">
             <router-link to="/HomeGallery">Картини</router-link>
             <ul v-if="dropdownVisible" class="dropdown-content">
-              <li><router-link to="/LandscapeGallery">Пейзажі</router-link></li>
-              <li><router-link to="/PortraitGallety">Портрети</router-link></li>
+              <li><router-link to="/LandscapeGallery">Пейзаж</router-link></li>
+              <li><router-link to="/PortraitGallety">Портрет</router-link></li>
               <li><router-link to="/AbstractGallery">Абстракція</router-link></li>
-              <li><router-link to="/StilllifeGallery">Натюрморти</router-link></li>
+              <li><router-link to="/StilllifeGallery">Натюрморт</router-link></li>
               <li><router-link to="/SurrealismGallery">Сюрреалізм</router-link></li>
             </ul>
           </li>
