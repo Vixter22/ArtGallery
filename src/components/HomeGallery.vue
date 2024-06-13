@@ -22,25 +22,25 @@ export default {
     return {
       categories: [
         {
-          name: 'Пейзажі',
+          name: 'Пейзаж',
           link: '/LandscapeGallery',
           image: '/peizaj.jpg',
           description: 'Картини, що зображують природні сцени та пейзажі.'
         },
         {
-          name: 'Портрети',
+          name: 'Портрет',
           link: '/PortraitGallety',
           image: '/portret.jpg',
           description: 'Картини, що зображують людей та їхні обличчя.'
         },
         {
-          name: 'Абстракції',
+          name: 'Абстракція',
           link: '/AbstractGallery',
           image: '/abs.jpg',
           description: 'Картини, що використовують абстрактні форми та кольори.'
         },
         {
-          name: 'Натюрморти',
+          name: 'Натюрморт',
           link: '/StilllifeGallery',
           image: '/nat.jpg',
           description: 'Картини, що зображують неживі предмети, як-от фрукти чи квіти.'

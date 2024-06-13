@@ -6,7 +6,7 @@
         <img :src="painting.image" :alt="painting.title">
         <div class="painting-info">
           <h2>{{ painting.title }}</h2>
-          <p>{{ painting.artist }}</p>
+          <p>Автор: {{ painting.artist }}</p>
           <p>{{ painting.description }}</p>
         </div>
       </div>
