@@ -1,17 +1,21 @@
 <template>
   <div class="painting-detail-container">
     <div v-if="painting" class="painting-content">
-      <div class="painting-image-container">
-        <img :src="painting.image" :alt="painting.title" class="painting-image">
-      </div>
+      <img :src="painting.image" :alt="painting.title" class="painting-image" @click="openModal">
       <div class="painting-info">
         <h1>{{ painting.title }}</h1>
-        <p>Автор: {{ painting.artist }}</p>
-        <p>{{ painting.description }}</p>
+        <p class="actor"><b>Автор: </b>{{ painting.artist }}</p>
+        <p class="description">{{ painting.description }}</p>
       </div>
     </div>
     <div v-else>
       <p>Завантаження даних...</p>
+    </div>
+
+    <div v-if="isModalOpen" class="modal" @click="closeModal">
+      <span class="close" @click="closeModal">&times;</span>
+      <img class="modal-content" :src="painting.image" alt="Full Image">
+      <div class="caption">{{ painting.title }}</div>
     </div>
   </div>
 </template>
@@ -21,7 +25,8 @@ export default {
   name: 'PaintingDetail',
   data() {
     return {
-      painting: null
+      painting: null,
+      isModalOpen: false,
     };
   },
   created() {
@@ -38,6 +43,12 @@ export default {
         .catch(error => {
           console.error('Error fetching painting detail:', error);
         });
+    },
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
     }
   }
 }
@@ -46,37 +57,25 @@ export default {
 <style>
 .painting-detail-container {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  justify-content: left;
+  padding: 50px;
   box-sizing: border-box;
 }
 
 .painting-content {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
   max-width: 1200px;
   width: 100%;
-  flex-wrap: wrap;
-}
-
-.painting-image-container {
-  flex: 0 0 auto;
-  margin-right: 20px;
-  max-width: 500px;
 }
 
 .painting-image {
-  width: 100%;
-  height: auto;
+  float: left;
+  margin: 0 20px 20px 0;
+  width: 500px; 
+  height: 400px; 
   object-fit: cover;
   border: 1px solid #ff6600;
   border-radius: 4px;
-}
-
-.painting-info {
-  flex: 1;
-  min-width: 300px;
+  cursor: pointer; 
 }
 
 .painting-info h1 {
@@ -85,17 +84,74 @@ export default {
   color: #ffffff;
 }
 
-.painting-info p {
+.actor {
   font-size: 1.1rem;
   line-height: 1.6;
   color: #aaa;
   margin: 10px 0;
   word-break: break-word;
+  text-align: center; 
 }
 
-.painting-info p strong {
+.description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #aaa;
+  margin: 10px 0;
+  word-break: break-word;
+  text-align: justify; 
+}
+
+.modal {
+  display: block; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgb(0, 0, 0); 
+  background-color: rgba(0, 0, 0, 0.9); 
+}
+
+.modal-content {
+  margin: 60px auto; 
   display: block;
-  margin-bottom: 10px;
+  width: 80%;
+  max-width: 700px;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
   font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer; 
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer; 
+}
+
+.caption {
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+@media (max-width: 768px) {
+  .painting-image {
+    float: none;
+    margin: 0 0 20px 0;
+    max-width: 100%;
+  }
 }
 </style>
