@@ -5,7 +5,9 @@
         <div class="logo-section">
           <img src="/logo.png" alt="Логотип" class="logo">
           <div class="site-info">
-            <h1>Палітра мистецтва</h1>
+            <router-link to="/" exact>
+              <h1>Палітра мистецтва</h1>
+            </router-link>
             <p class="text-muted">Зв'яжіться з нами для отримання додаткової інформації.</p>
           </div>
         </div>
@@ -82,6 +84,9 @@ footer {
   margin: 0;
   font-size: 1.5rem;
   color: #fff; 
+}
+.site-info a {
+  text-decoration: none;
 }
 .text-muted {
   color: #aaa; 
