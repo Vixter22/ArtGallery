@@ -2,7 +2,9 @@
   <nav>
     <div class="navbar-content">
       <div class="navbar-left">
-        <h1>Палітра мистецтва</h1>
+        <router-link to="/" exact>
+              <h1>Палітра мистецтва</h1>
+        </router-link>
       </div>
       <div class="navbar-right">
         <ul>
@@ -67,6 +69,11 @@ nav {
   color: #fff;
   font-size: 1.5rem;
 }
+
+.navbar-left a {
+  text-decoration: none;
+}
+
 .navbar-right ul {
   list-style: none;
   display: flex;

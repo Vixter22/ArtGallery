@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorizatio
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "artgallery_pm";
+$dbname = "artgallery_db"; // змінено назву бази даних
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -15,8 +15,8 @@ if ($conn->connect_error) {
     die(json_encode(array("error" => "Connection failed: " . $conn->connect_error)));
 }
 
-// Оновлений SQL-запит без стовпця `biography`
-$sql = "SELECT a.name, a.bday, a.country, a.image 
+// Оновлений SQL-запит для отримання даних про художників
+$sql = "SELECT a.name, a.bday, a.country, a.image, a.biography 
         FROM artist a";
 $result = $conn->query($sql);
 

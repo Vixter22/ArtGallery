@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorizatio
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "artgallery_pm";
+$dbname = "artgallery_db";  // змінено назву бази даних
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -23,18 +23,17 @@ $response = array();
 
 if ($id) {
     // Виконуємо запит до бази даних для отримання картини за ID
-    $sql = "SELECT p.id, p.title, c.name as category, a.name as artist, p.image, d.description 
+    $sql = "SELECT p.id, p.title, c.name as category, a.name as artist, p.image, p.description 
             FROM paintings p
-            LEFT JOIN painting_description d ON p.description_id = d.id
-            LEFT JOIN category c ON p.category = c.name
-            LEFT JOIN artist a ON p.artist = a.name
+            LEFT JOIN category c ON p.category = c.id
+            LEFT JOIN artist a ON p.artist = a.id
             WHERE p.id = $id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $response = $result->fetch_assoc();
         // Додаємо повний шлях до зображень
-        $response['image'] = 'http://localhost/artgallery/public' . $response['image'];
+        $response['image'] = 'http://localhost/artgallery/public/' . $response['image'];
     } else {
         error_log("No painting found with id: " . $id);
         $response['error'] = "No painting found";
@@ -43,8 +42,8 @@ if ($id) {
     // Виконуємо запит до бази даних для отримання картин за категорією
     $sql = "SELECT p.id, p.title, c.name as category, a.name as artist, p.image
             FROM paintings p
-            LEFT JOIN category c ON p.category = c.name
-            LEFT JOIN artist a ON p.artist = a.name
+            LEFT JOIN category c ON p.category = c.id
+            LEFT JOIN artist a ON p.artist = a.id
             WHERE c.name = '$category'";
     $result = $conn->query($sql);
 
@@ -52,7 +51,7 @@ if ($id) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             // Додаємо повний шлях до зображень
-            $row['image'] = 'http://localhost/artgallery/public' . $row['image'];
+            $row['image'] = 'http://localhost/artgallery/public/' . $row['image'];
             $paintings[] = $row;
         }
     } else {
