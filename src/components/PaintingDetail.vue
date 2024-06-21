@@ -4,7 +4,12 @@
       <img :src="painting.image" :alt="painting.title" class="painting-image" @click="openModal">
       <div class="painting-info">
         <h1>{{ painting.title }}</h1>
-        <p class="actor"><b>Автор: </b>{{ painting.artist }}</p>
+        <p class="actor">
+          <b>Автор: </b>
+          <span @click="goToArtistDetail(painting.artist_id)" style="cursor: pointer; color: #aaa; text-decoration: underline;">
+            {{ painting.artist }}
+          </span>
+        </p>
         <p class="description">{{ painting.description }}</p>
       </div>
     </div>
@@ -49,6 +54,9 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+    },
+    goToArtistDetail(artistId) {
+      this.$router.push({ name: 'ArtistDetail', params: { id: artistId } });
     }
   }
 }
@@ -58,7 +66,7 @@ export default {
 .painting-detail-container {
   display: flex;
   justify-content: left;
-  padding: 50px;
+  padding: 60px;
   box-sizing: border-box;
 }
 
@@ -87,10 +95,16 @@ export default {
 .actor {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #aaa;
+  color: #aaa; /* Змінено колір */
   margin: 10px 0;
   word-break: break-word;
   text-align: center; 
+}
+
+.actor span {
+  cursor: pointer;
+  color: #aaa; /* Колір для посилання */
+  text-decoration: underline; /* Додаємо підкреслення */
 }
 
 .description {

@@ -7,6 +7,14 @@
         <p class="bday"><b>Дата народження: </b>{{ artist.bday }}</p>
         <p class="country"><b>Країна: </b>{{ artist.country }}</p>
         <p class="biography"><b>Біографія: </b>{{ artist.biography }}</p>
+        <div class="paintings-list">
+          <h2>Список картин художника:</h2>
+          <ul>
+            <li v-for="painting in artist.paintings" :key="painting.id">
+              <router-link :to="{ name: 'PaintingDetail', params: { id: painting.id } }">{{ painting.title }}</router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -51,7 +59,7 @@ export default {
 .artist-detail-container {
   display: flex;
   justify-content: left;
-  padding: 50px;
+  padding: 60px;
   box-sizing: border-box;
 }
 
@@ -63,8 +71,8 @@ export default {
 .artist-image {
   float: left;
   margin: 0 20px 20px 0;
-  width: 500px; 
-  height: 400px; 
+  width: 500px;
+  height: 400px;
   object-fit: cover;
   border: 1px solid #ff6600;
   border-radius: 4px;
@@ -84,6 +92,39 @@ export default {
 }
 
 .biography {
-  text-align: justify; /* Додаємо вирівнювання по ширині */
+  text-align: justify;
+}
+
+.paintings-list {
+  margin-top: 20px;
+}
+
+.paintings-list h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.paintings-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+
+.paintings-list li {
+  margin: 5px;
+  width: calc(33.333% - 10px);
+  text-align: center;
+}
+
+.paintings-list li a {
+  color: #aaa;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 1.2rem; /* Збільшуємо розмір тексту */
+}
+
+.paintings-list li a:hover {
+  text-decoration: none;
 }
 </style>

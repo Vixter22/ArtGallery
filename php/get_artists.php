@@ -1,11 +1,10 @@
 <?php
-// Додаємо заголовки CORS для всіх запитів
+// Додаємо заголовки CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Повертаємо 200 OK для CORS preflight запитів
     http_response_code(200);
     exit();
 }
@@ -31,9 +30,21 @@ if ($id) {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $response = $result->fetch_assoc();
-        // Додаємо повний шлях до зображень
-        $response['image'] = 'http://localhost/artgallery/public/' . $response['image'];
+        $artist = $result->fetch_assoc();
+
+        // Виконуємо запит до бази даних для отримання картин художника за ID
+        $sql_paintings = "SELECT id, title FROM paintings WHERE artist = $id";
+        $result_paintings = $conn->query($sql_paintings);
+
+        $paintings = array();
+        if ($result_paintings->num_rows > 0) {
+            while ($row = $result_paintings->fetch_assoc()) {
+                $paintings[] = $row;
+            }
+        }
+        
+        $artist['paintings'] = $paintings;
+        $response = $artist;
     } else {
         error_log("No artist found with id: " . $id);
         $response['error'] = "No artist found";
@@ -46,8 +57,6 @@ if ($id) {
     $artists = array();
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            // Додаємо повний шлях до зображень
-            $row['image'] = 'http://localhost/artgallery/public/' . $row['image'];
             $artists[] = $row;
         }
     } else {

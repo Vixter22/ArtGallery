@@ -59,7 +59,7 @@ const routes = [
   {
     path: '/artist/:id',
     name: 'ArtistDetail',
-    component: ArtistDetail,
+    component: ArtistDetail
   }
 ];
 

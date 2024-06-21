@@ -1,13 +1,19 @@
 <?php
+// Додаємо заголовки CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Підключення до бази даних
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "artgallery_db";  // змінено назву бази даних
+$dbname = "artgallery_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -23,7 +29,7 @@ $response = array();
 
 if ($id) {
     // Виконуємо запит до бази даних для отримання картини за ID
-    $sql = "SELECT p.id, p.title, c.name as category, a.name as artist, p.image, p.description 
+    $sql = "SELECT p.id, p.title, c.name as category, a.id as artist_id, a.name as artist, p.image, p.description 
             FROM paintings p
             LEFT JOIN category c ON p.category = c.id
             LEFT JOIN artist a ON p.artist = a.id
