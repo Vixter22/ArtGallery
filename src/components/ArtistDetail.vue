@@ -82,4 +82,8 @@ export default {
   color: #aaa;
   margin: 10px 0;
 }
+
+.biography {
+  text-align: justify; /* Додаємо вирівнювання по ширині */
+}
 </style>
