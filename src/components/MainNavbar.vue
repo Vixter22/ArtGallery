@@ -19,7 +19,7 @@
               <li><router-link to="/SurrealismGallery">Сюрреалізм</router-link></li>
             </ul>
           </li>
-          <li><router-link to="/About">Художники</router-link></li>
+          <li><router-link to="/AboutGallery">Художники</router-link></li>
         </ul>
       </div>
     </div>

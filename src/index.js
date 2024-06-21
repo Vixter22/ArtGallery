@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/components/Home.vue';
-import About from '@/components/About.vue';
+import AboutGallery from '@/components/AboutGallery.vue';
 import HomeGallery from '@/components/HomeGallery.vue';
 import LandscapeGallery from '@/components/category/LandscapeGallery.vue';
 import PortraitGallety from '@/components/category/PortraitGallety.vue';
 import AbstractGallery from '@/components/category/AbstractGallery.vue';
 import StilllifeGallery from '@/components/category/StilllifeGallery.vue';
 import SurrealismGallery from '@/components/category/SurrealismGallery.vue';
-import PaintingDetail from '@/components/PaintingDetail.vue'; // Додаємо цей імпорт
+import PaintingDetail from '@/components/PaintingDetail.vue'; 
+import ArtistDetail from '@/components/ArtistDetail';
 
 const routes = [
   {
@@ -21,9 +22,9 @@ const routes = [
     component: HomeGallery
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About
+    path: '/AboutGallery',
+    name: 'AboutGallery',
+    component: AboutGallery
   },
   {
     path: '/LandscapeGallery',
@@ -53,7 +54,12 @@ const routes = [
   {
     path: '/painting/:id',
     name: 'PaintingDetail',
-    component: PaintingDetail // Додаємо цей маршрут
+    component: PaintingDetail
+  },
+  {
+    path: '/artist/:id',
+    name: 'ArtistDetail',
+    component: ArtistDetail,
   }
 ];
 

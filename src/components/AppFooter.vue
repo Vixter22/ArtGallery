@@ -29,7 +29,7 @@
         <ul>
           <li><router-link to="/">Головна</router-link></li>
           <li><router-link to="/HomeGallery">Категорії картин</router-link></li>
-          <li><router-link to="/About">Художники</router-link></li>
+          <li><router-link to="/AboutGallery">Художники</router-link></li>
         </ul>
       </div>
     </div>
