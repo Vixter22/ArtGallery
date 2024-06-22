@@ -1,6 +1,16 @@
 <template>
   <div class="gallery-container">
-    <h1>Наші Художники</h1>
+    <div class="header-container">
+      <h1>Наші Художники</h1>
+      <div class="search-container">
+        <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників...">
+        <ul class="search-results" v-if="searchResults.length">
+          <li v-for="artist in searchResults" :key="artist.id">
+            <router-link :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{ artist.name }}</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
     <div v-if="artists.length" class="artists-grid">
       <div v-for="artist in artists" :key="artist.id" class="artist" @click="goToArtistDetail(artist.id)">
         <img :src="artist.image" :alt="artist.name">
@@ -21,7 +31,9 @@ export default {
   name: 'AboutGallery',
   data() {
     return {
-      artists: []
+      artists: [],
+      searchQuery: '',
+      searchResults: []
     };
   },
   created() {
@@ -32,12 +44,25 @@ export default {
       fetch('http://localhost/artgallery/php/get_artists.php')
         .then(response => response.json())
         .then(data => {
-          console.log('Fetched data:', data);
           this.artists = data;
         })
         .catch(error => {
           console.error('Error fetching artists:', error);
         });
+    },
+    searchArtists() {
+      if (this.searchQuery.length > 2) {
+        fetch(`http://localhost/artgallery/php/search_artists.php?query=${this.searchQuery}`)
+          .then(response => response.json())
+          .then(data => {
+            this.searchResults = data;
+          })
+          .catch(error => {
+            console.error('Error fetching search results:', error);
+          });
+      } else {
+        this.searchResults = [];
+      }
     },
     goToArtistDetail(id) {
       this.$router.push({ name: 'ArtistDetail', params: { id } });
@@ -47,10 +72,63 @@ export default {
 </script>
 
 <style>
+body {
+  background-color: #111;
+  color: #fff;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 .gallery-container {
   padding: 15px;
   background-color: #111;
   min-height: 100vh;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-container {
+  position: relative;
+  width: 300px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #222;
+  border-radius: 5px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.search-results li {
+  margin: 0;
+}
+
+.search-results li a {
+  color: #ff6600;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem;
+}
+
+.search-results li a:hover {
+  text-decoration: underline;
 }
 
 .artists-grid {
