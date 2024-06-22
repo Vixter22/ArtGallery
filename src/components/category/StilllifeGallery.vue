@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'LandscapeGallery',
+  name: 'StilllifeGallery',
   data() {
     return {
       paintings: []

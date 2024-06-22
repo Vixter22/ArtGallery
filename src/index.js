@@ -9,7 +9,8 @@ import StilllifeGallery from '@/components/category/StilllifeGallery.vue';
 import SurrealismGallery from '@/components/category/SurrealismGallery.vue';
 import PaintingDetail from '@/components/PaintingDetail.vue'; 
 import ArtistDetail from '@/components/ArtistDetail';
-
+import AdminPanel from '@/components/AdminPanel.vue'; 
+import store from '@/store';
 const routes = [
   {
     path: '/',
@@ -60,12 +61,27 @@ const routes = [
     path: '/artist/:id',
     name: 'ArtistDetail',
     component: ArtistDetail
+  },
+  {
+    path: '/admin',
+    name: 'AdminPanel',
+    component: AdminPanel,
+    meta: { requiresAuth: true }
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.state.isLoggedIn;
+  if (to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn) {
+    next('/');
+  } else {
+    next();
+  }
 });
 
 export default router;

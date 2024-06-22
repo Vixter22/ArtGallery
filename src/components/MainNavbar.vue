@@ -3,7 +3,7 @@
     <div class="navbar-content">
       <div class="navbar-left">
         <router-link to="/" exact>
-              <h1>Палітра мистецтва</h1>
+          <h1>Палітра мистецтва</h1>
         </router-link>
       </div>
       <div class="navbar-right">
@@ -20,13 +20,28 @@
             </ul>
           </li>
           <li><router-link to="/AboutGallery">Художники</router-link></li>
+          <li><a @click.prevent="toggleProfile" href="#">Профіль</a></li>
         </ul>
+      </div>
+    </div>
+    <div v-if="showProfilePanel" class="profile-panel">
+      <div v-if="!isAuthenticated">
+        <h2>Вхід</h2>
+        <input type="text" v-model="username" placeholder="Логін" />
+        <input type="password" v-model="password" placeholder="Пароль" />
+        <button @click="login">Увійти</button>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      </div>
+      <div v-else>
+        <button @click="logout">Вийти</button>
+        <router-link to="/admin">Адмін панель</router-link>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import axios from 'axios';
 import { RouterLink } from 'vue-router';
 
 export default {
@@ -36,7 +51,12 @@ export default {
   },
   data() {
     return {
-      dropdownVisible: false
+      dropdownVisible: false,
+      showProfilePanel: false,
+      isAuthenticated: false,
+      username: '',
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
@@ -45,6 +65,33 @@ export default {
     },
     hideDropdown() {
       this.dropdownVisible = false;
+    },
+    toggleProfile() {
+      this.showProfilePanel = !this.showProfilePanel;
+    },
+    async login() {
+      try {
+        const response = await axios.post('http://localhost/artgallery/php/login.php', {
+          username: this.username,
+          password: this.password
+        });
+        if (response.data.success) {
+          this.isAuthenticated = true;
+          this.errorMessage = '';
+        } else {
+          this.errorMessage = response.data.message || 'Невірний логін або пароль';
+        }
+      } catch (error) {
+        this.errorMessage = 'Помилка при вході';
+        console.error('Помилка при вході:', error);
+      }
+    },
+    logout() {
+      this.isAuthenticated = false;
+      this.username = '';
+      this.password = '';
+      this.errorMessage = '';
+      this.showProfilePanel = false;
     }
   }
 }
@@ -123,5 +170,33 @@ nav {
 }
 .dropdown:hover .dropdown-content {
   display: block; 
+}
+.profile-panel {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  background: #111;
+  padding: 1rem;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+.profile-panel input {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  width: 100%;
+}
+.profile-panel button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.error {
+  color: red;
+  margin-top: 1rem;
 }
 </style>
