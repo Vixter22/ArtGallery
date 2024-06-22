@@ -4,7 +4,7 @@
       <div class="header-with-search">
         <h1 class="category_h1">Категорії картин</h1>
         <div class="search-box">
-          <input type="text" v-model="searchQuery" @input="searchPaintings" placeholder="Пошук за назвою картин">
+          <input type="text" v-model="searchQuery" @input="searchPaintings" placeholder="Пошук картин за назвою">
           <ul class="search-results" v-if="searchResults.length">
             <li v-for="painting in searchResults" :key="painting.id">
               <router-link :to="{ name: 'PaintingDetail', params: { id: painting.id } }">{{ painting.title }}</router-link>
@@ -119,6 +119,8 @@ body {
 
 .search-box {
   position: relative;
+  width: 200px; 
+  padding-right: 15px;
 }
 
 .header-with-search input {

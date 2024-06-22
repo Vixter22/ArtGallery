@@ -3,7 +3,7 @@
     <div class="header-container">
       <h1>Наші Художники</h1>
       <div class="search-container">
-        <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників...">
+        <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників">
         <ul class="search-results" v-if="searchResults.length">
           <li v-for="artist in searchResults" :key="artist.id">
             <router-link :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{ artist.name }}</router-link>
@@ -73,8 +73,8 @@ export default {
 
 <style>
 body {
-  background-color: #111;
-  color: #fff;
+  background-color: #111; 
+  color: #fff; 
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -89,31 +89,48 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 500px;
+  padding-right: 55px;
 }
 
 .search-container {
   position: relative;
-  width: 300px;
+  width: 190px; 
 }
 
 .search-container input {
   width: 100%;
-  padding: 0.5rem;
-  border: none;
+  padding: 0.5rem 1rem; 
+  background-color: #000; 
+  color: #ff6600; 
+  border: 2px solid #ff6600; 
   border-radius: 5px;
+  font-size: 1rem;
+}
+
+.search-container input::placeholder {
+  color: #aaa; 
+}
+
+.search-container input:focus {
+  outline: none; 
+  border-color: #ff6600; 
 }
 
 .search-results {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: #222;
-  border-radius: 5px;
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
-  z-index: 1000;
+  width: 100%;
+  background: #222;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 10;
 }
 
 .search-results li {
