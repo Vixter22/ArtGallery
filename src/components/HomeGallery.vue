@@ -41,7 +41,7 @@ export default {
         },
         {
           name: 'Портрет',
-          link: '/PortraitGallery',
+          link: '/PortraitGallety',
           image: '/portret.jpg',
           description: 'Картини, що зображують людей та їхні обличчя.'
         },
@@ -98,6 +98,7 @@ body {
 .home-gallery {
   display: flex;
   justify-content: space-between;
+  padding-top: 15px;
 }
 
 .categories-container {
@@ -122,9 +123,20 @@ body {
 
 .header-with-search input {
   padding: 0.5rem;
-  border: none;
+  background-color: #000; 
+  color: #ff6600; 
+  border: 2px solid #ff6600; 
   border-radius: 5px;
   font-size: 1rem;
+}
+
+.header-with-search input::placeholder {
+  color: #aaa; 
+}
+
+.header-with-search input:focus {
+  outline: none; 
+  border-color: #ff6600; 
 }
 
 .search-results {
@@ -156,7 +168,7 @@ body {
   text-decoration: underline;
 }
 
-.category_h1{
+.category_h1 {
   padding-left: 500px;
 }
 

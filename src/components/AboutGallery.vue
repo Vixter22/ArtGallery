@@ -48,7 +48,7 @@ export default {
 
 <style>
 .gallery-container {
-  padding: 20px;
+  padding: 15px;
   background-color: #111;
   min-height: 100vh;
 }
