@@ -13,7 +13,7 @@
             <router-link to="/HomeGallery">Картини</router-link>
             <ul v-if="dropdownVisible" class="dropdown-content">
               <li><router-link to="/LandscapeGallery">Пейзаж</router-link></li>
-              <li><router-link to="/PortraitGallety">Портрет</router-link></li>
+              <li><router-link to="/PortraitGallery">Портрет</router-link></li>
               <li><router-link to="/AbstractGallery">Абстракція</router-link></li>
               <li><router-link to="/StilllifeGallery">Натюрморт</router-link></li>
               <li><router-link to="/SurrealismGallery">Сюрреалізм</router-link></li>
@@ -27,14 +27,21 @@
     <div v-if="showProfilePanel" class="profile-panel">
       <div v-if="!isLoggedIn">
         <h2>Вхід</h2>
+        <div class="password-container">
         <input type="text" v-model="username" placeholder="Логін" />
-        <input type="password" v-model="password" placeholder="Пароль" />
+        </div>
+        <div class="password-container">
+          <input :type="passwordFieldType" v-model="password" placeholder="Пароль" />
+          <span class="toggle-password" @click="togglePasswordVisibility">👁️</span>
+        </div>
         <button @click="login">Увійти</button>
-        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <div class="error-space">
+          <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        </div>
       </div>
       <div v-else>
         <button @click="logout">Вийти</button>
-        <router-link to="/admin">Адмін панель</router-link> <!-- Оновлений шлях -->
+        <router-link to="/admin">Адмін панель</router-link>
       </div>
     </div>
   </nav>
@@ -52,7 +59,8 @@ export default {
       showProfilePanel: false,
       username: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      passwordFieldType: 'password'
     };
   },
   computed: {
@@ -95,6 +103,9 @@ export default {
       this.password = '';
       this.errorMessage = '';
       this.showProfilePanel = false;
+    },
+    togglePasswordVisibility() {
+      this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
     }
   }
 }
@@ -182,12 +193,30 @@ nav {
   padding: 1rem;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
+  width: 300px; 
 }
 .profile-panel input {
   display: block;
   margin: 0.5rem 0;
-  padding: 0.5rem;
-  width: 100%;
+  padding: 1rem 0.5rem; 
+  width: calc(100% - 2rem); 
+  background-color: #000; 
+  border: 1px solid #ff6600; 
+  color: #ff6600; 
+}
+.password-container {
+  position: relative;
+}
+.password-container input {
+  width: 282px;
+}
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ff6600; 
 }
 .profile-panel button {
   display: block;
@@ -198,8 +227,15 @@ nav {
   border: none;
   cursor: pointer;
 }
+.error-space {
+  height: 2.5rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
 .error {
+  padding-top: 10px;
   color: red;
-  margin-top: 1rem;
+  margin: 0;
 }
 </style>

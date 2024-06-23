@@ -3,7 +3,7 @@
     <div class="header-container">
       <h1>Наші Художники</h1>
       <div class="search-container">
-        <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників">
+        <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників за ім'ям">
         <ul class="search-results" v-if="searchResults.length">
           <li v-for="artist in searchResults" :key="artist.id">
             <router-link :to="{ name: 'ArtistDetail', params: { id: artist.id } }">{{ artist.name }}</router-link>
@@ -95,12 +95,12 @@ body {
 
 .search-container {
   position: relative;
-  width: 190px; 
+  width: 200px; 
 }
 
 .search-container input {
   width: 100%;
-  padding: 0.5rem 1rem; 
+  padding: 0.5rem; 
   background-color: #000; 
   color: #ff6600; 
   border: 2px solid #ff6600; 
@@ -114,7 +114,7 @@ body {
 
 .search-container input:focus {
   outline: none; 
-  border-color: #ff6600; 
+  border-color: #ffffff; 
 }
 
 .search-results {

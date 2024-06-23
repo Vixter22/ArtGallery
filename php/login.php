@@ -38,10 +38,10 @@ if (isset($data->username) && isset($data->password)) {
     if ($result->num_rows > 0) {
         echo json_encode(["success" => true]);
     } else {
-        echo json_encode(["success" => false, "message" => "Invalid username or password"]);
+        echo json_encode(["success" => false, "message" => "Невірний логін або пароль"]);
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Username and password required"]);
+    echo json_encode(["success" => false, "message" => "Невірний логін або пароль"]);
 }
 
 // Закриття підключення
