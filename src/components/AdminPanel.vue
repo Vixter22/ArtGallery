@@ -43,6 +43,7 @@
         <textarea v-model="newPainting.description" required></textarea>
 
         <button type="submit">Додати картину</button>
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
     </div>
   </div>
@@ -62,43 +63,63 @@ export default {
         artist: '',
         image: '',
         description: ''
-      }
+      },
+      errorMessage: ''
     };
   },
   created() {
     this.fetchPaintings();
   },
   methods: {
-    fetchPaintings() {
-      axios.get('http://localhost/artgallery/php/fetch_paintings.php')
-        .then(response => {
-          this.paintings = response.data;
-        })
-        .catch(error => {
-          console.error("There was an error fetching the paintings!", error);
-        });
-    },
-    addPainting() {
-      axios.post('http://localhost/artgallery/php/fetch_paintings.php', this.newPainting)
-        .then(response => {
-          if (response.data.success) {
-            this.fetchPaintings();
-            this.newPainting = {
-              title: '',
-              category: '',
-              artist: '',
-              image: '',
-              description: ''
-            };
-          } else {
-            alert(response.data.error || 'Failed to add painting');
-          }
-        })
-        .catch(error => {
-          console.error("There was an error adding the painting!", error);
-        });
+  fetchPaintings() {
+    axios.get('http://localhost/artgallery/php/fetch_paintings.php') 
+      .then(response => {
+        this.paintings = response.data;
+      })
+      .catch(error => {
+        console.error("There was an error fetching the paintings!", error);
+      });
+  },
+  addPainting() {
+    const newPainting = {
+      title: this.newPainting.title,
+      category: this.newPainting.category,
+      artist: this.newPainting.artist,
+      image: this.newPainting.image,
+      description: this.newPainting.description
+    };
+
+    // Перевірка наявності всіх полів перед відправленням
+    const requiredFields = ['title', 'category', 'artist', 'image', 'description'];
+    for (const field of requiredFields) {
+      if (!newPainting[field]) {
+        this.errorMessage = `Missing field: ${field}`;
+        return;
+      }
     }
+
+    axios.post('http://localhost/artgallery/php/fetch_paintings.php', newPainting)
+      .then(response => {
+        if (response.data.message === "Painting added successfully") {
+          this.fetchPaintings(); // Оновлення списку картин після успішного додавання
+          this.errorMessage = '';
+          this.newPainting = {
+            title: '',
+            category: '',
+            artist: '',
+            image: '',
+            description: ''
+          };
+        } else {
+          this.errorMessage = response.data.message || "Failed to add painting";
+        }
+      })
+      .catch(error => {
+        console.error("There was an error adding the painting!", error);
+        this.errorMessage = "Failed to add painting";
+      });
   }
+}
 };
 </script>
 
@@ -177,5 +198,10 @@ button {
 
 button:hover {
   background-color: #e55d00;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
 </style>
