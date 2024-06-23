@@ -28,7 +28,7 @@
       <div v-if="!isLoggedIn">
         <h2>Вхід</h2>
         <div class="password-container">
-        <input type="text" v-model="username" placeholder="Логін" />
+          <input type="text" v-model="username" placeholder="Логін" />
         </div>
         <div class="password-container">
           <input :type="passwordFieldType" v-model="password" placeholder="Пароль" />
@@ -39,9 +39,9 @@
           <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         </div>
       </div>
-      <div v-else>
-        <button @click="logout">Вийти</button>
-        <router-link to="/admin">Адмін панель</router-link>
+      <div v-else class="admin-logout">
+        <router-link to="/admin" class="buttonA">Адмін панель</router-link>
+        <button @click="logout" >Вийти</button>
       </div>
     </div>
   </nav>
@@ -103,6 +103,7 @@ export default {
       this.password = '';
       this.errorMessage = '';
       this.showProfilePanel = false;
+      window.location.reload();
     },
     togglePasswordVisibility() {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
@@ -218,7 +219,7 @@ nav {
   cursor: pointer;
   color: #ff6600; 
 }
-.profile-panel button {
+.profile-panel button{
   display: block;
   width: 100%;
   padding: 0.5rem;
@@ -226,6 +227,29 @@ nav {
   color: #fff;
   border: none;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.profile-panel .buttonA{
+  display: block;
+  width: 284px;
+  padding: 0.5rem;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.profile-panel .button:hover {
+  background: #e55a00;
+}
+.admin-logout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .error-space {
   height: 2.5rem; 
@@ -237,5 +261,9 @@ nav {
   padding-top: 10px;
   color: red;
   margin: 0;
+}
+.admin-logout{
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 </style>
