@@ -34,7 +34,7 @@
       </div>
       <div v-else>
         <button @click="logout">Вийти</button>
-        <router-link to="/admin">Адмін панель</router-link>
+        <router-link to="/AdminPanel">Адмін панель</router-link>
       </div>
     </div>
   </nav>
