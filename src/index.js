@@ -7,10 +7,11 @@ import PortraitGallety from '@/components/category/PortraitGallety.vue';
 import AbstractGallery from '@/components/category/AbstractGallery.vue';
 import StilllifeGallery from '@/components/category/StilllifeGallery.vue';
 import SurrealismGallery from '@/components/category/SurrealismGallery.vue';
-import PaintingDetail from '@/components/PaintingDetail.vue'; 
-import ArtistDetail from '@/components/ArtistDetail';
-import AdminPanel from '@/components/AdminPanel.vue'; 
-import store from '@/store';
+import PaintingDetail from '@/components/PaintingDetail.vue';
+import ArtistDetail from '@/components/ArtistDetail.vue';
+import AdminPanel from '@/components/AdminPanel.vue'; // Доданий компонент адмін панелі
+import store from '@/store.js'; // Імпорт Vuex стору
+
 const routes = [
   {
     path: '/',
@@ -66,7 +67,7 @@ const routes = [
     path: '/admin',
     name: 'AdminPanel',
     component: AdminPanel,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true } // Додано мета тег для аутентифікації
   }
 ];
 

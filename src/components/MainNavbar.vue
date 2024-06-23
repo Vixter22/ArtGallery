@@ -25,7 +25,7 @@
       </div>
     </div>
     <div v-if="showProfilePanel" class="profile-panel">
-      <div v-if="!isAuthenticated">
+      <div v-if="!isLoggedIn">
         <h2>Вхід</h2>
         <input type="text" v-model="username" placeholder="Логін" />
         <input type="password" v-model="password" placeholder="Пароль" />
@@ -34,7 +34,7 @@
       </div>
       <div v-else>
         <button @click="logout">Вийти</button>
-        <router-link to="/AdminPanel">Адмін панель</router-link>
+        <router-link to="/admin">Адмін панель</router-link> <!-- Оновлений шлях -->
       </div>
     </div>
   </nav>
@@ -42,24 +42,24 @@
 
 <script>
 import axios from 'axios';
-import { RouterLink } from 'vue-router';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'MainNavbar',
-  components: {
-    RouterLink
-  },
   data() {
     return {
       dropdownVisible: false,
       showProfilePanel: false,
-      isAuthenticated: false,
       username: '',
       password: '',
       errorMessage: ''
     };
   },
+  computed: {
+    ...mapState(['isLoggedIn'])
+  },
   methods: {
+    ...mapMutations(['SET_LOGGED_IN']),
     showDropdown() {
       this.dropdownVisible = true;
     },
@@ -76,8 +76,10 @@ export default {
           password: this.password
         });
         if (response.data.success) {
-          this.isAuthenticated = true;
+          this.SET_LOGGED_IN(true);
+          localStorage.setItem('token', response.data.token);
           this.errorMessage = '';
+          this.showProfilePanel = false;
         } else {
           this.errorMessage = response.data.message || 'Невірний логін або пароль';
         }
@@ -87,7 +89,8 @@ export default {
       }
     },
     logout() {
-      this.isAuthenticated = false;
+      this.SET_LOGGED_IN(false);
+      localStorage.removeItem('token');
       this.username = '';
       this.password = '';
       this.errorMessage = '';

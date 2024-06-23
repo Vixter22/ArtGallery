@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default createStore({
   state: {
-    isLoggedIn: false
+    isLoggedIn: !!localStorage.getItem('token')
   },
   mutations: {
     SET_LOGGED_IN(state, status) {
@@ -15,6 +15,7 @@ export default createStore({
       try {
         const response = await axios.post('http://localhost/artgallery/php/login.php', { username, password });
         if (response.data.success) {
+          localStorage.setItem('token', response.data.token); // Збережіть токен з відповіді сервера
           commit('SET_LOGGED_IN', true);
           return true;
         }
@@ -25,7 +26,16 @@ export default createStore({
       }
     },
     logout({ commit }) {
+      localStorage.removeItem('token'); // Видаліть токен
       commit('SET_LOGGED_IN', false);
+    },
+    checkAuth({ commit }) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        commit('SET_LOGGED_IN', true);
+      } else {
+        commit('SET_LOGGED_IN', false);
+      }
     }
   }
 });
