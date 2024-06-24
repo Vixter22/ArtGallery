@@ -8,9 +8,9 @@
           <thead>
             <tr>
               <th @click="sortById">ID</th>
-              <th>Назва картини</th>
-              <th>Категорія</th>
-              <th>Художник</th>
+              <th @click="sortByTitle">Назва картини</th>
+              <th @click="sortByCategory">Категорія</th>
+              <th @click="sortByArtist">Художник</th>
               <th>Дії</th>
             </tr>
           </thead>
@@ -69,7 +69,10 @@ export default {
       },
       errorMessage: '',
       successMessage: '',
-      sortAscending: true // Відстеження напрямку сортування
+      sortAscending: true, // Відстеження напрямку сортування для ID
+      sortTitleAscending: true, // Відстеження напрямку сортування для назви
+      sortCategoryAscending: true, // Відстеження напрямку сортування для категорії
+      sortArtistAscending: true // Відстеження напрямку сортування для художника
     };
   },
   created() {
@@ -152,6 +155,54 @@ export default {
         }
       });
       this.sortAscending = !this.sortAscending; // Зміна напрямку сортування
+    },
+    sortByTitle() {
+      this.paintings.sort((a, b) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        if (this.sortTitleAscending) {
+          if (titleA < titleB) return -1;
+          if (titleA > titleB) return 1;
+          return 0;
+        } else {
+          if (titleA > titleB) return -1;
+          if (titleA < titleB) return 1;
+          return 0;
+        }
+      });
+      this.sortTitleAscending = !this.sortTitleAscending; // Зміна напрямку сортування
+    },
+    sortByCategory() {
+      this.paintings.sort((a, b) => {
+        const categoryA = a.category.toLowerCase();
+        const categoryB = b.category.toLowerCase();
+        if (this.sortCategoryAscending) {
+          if (categoryA < categoryB) return -1;
+          if (categoryA > categoryB) return 1;
+          return 0;
+        } else {
+          if (categoryA > categoryB) return -1;
+          if (categoryA < categoryB) return 1;
+          return 0;
+        }
+      });
+      this.sortCategoryAscending = !this.sortCategoryAscending; // Зміна напрямку сортування
+    },
+    sortByArtist() {
+      this.paintings.sort((a, b) => {
+        const artistA = a.artist.toLowerCase();
+        const artistB = b.artist.toLowerCase();
+        if (this.sortArtistAscending) {
+          if (artistA < artistB) return -1;
+          if (artistA > artistB) return 1;
+          return 0;
+        } else {
+          if (artistA > artistB) return -1;
+          if (artistA < artistB) return 1;
+          return 0;
+        }
+      });
+      this.sortArtistAscending = !this.sortArtistAscending; // Зміна напрямку сортування
     }
   }
 };
@@ -194,7 +245,7 @@ th, td {
 th {
   background-color: #ff6a06;
   color: #FFFFFF;
-  cursor: pointer; /* Вказівник курсора для заголовків стовпців */
+  cursor: pointer; 
 }
 
 tr:nth-child(even) {
