@@ -67,15 +67,15 @@
 
     <section class="contact-form">
       <h2>Зв'яжіться з нами</h2>
-      <form>
+      <form @submit.prevent="submitForm">
         <label for="name">Ім'я</label>
-        <input type="text" id="name" name="name">
+        <input type="text" id="name" v-model="form.name" :style="inputStyle" @focus="focusInput" @blur="blurInput">
         
         <label for="email">Електронна пошта</label>
-        <input type="email" id="email" name="email">
+        <input type="email" id="email" v-model="form.email" :style="inputStyle" @focus="focusInput" @blur="blurInput">
         
         <label for="message">Повідомлення</label>
-        <textarea id="message" name="message"></textarea>
+        <textarea id="message" v-model="form.message" :style="inputStyle" @focus="focusInput" @blur="blurInput"></textarea>
         
         <button type="submit">Відправити</button>
       </form>
@@ -85,7 +85,54 @@
 
 <script>
 export default {
-  name: 'HomePage'
+  name: 'HomePage',
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        message: ''
+      },
+      inputStyle: {
+        borderColor: '#ff6600',
+        color: '#ff6600'
+      }
+    };
+  },
+  methods: {
+    focusInput(event) {
+      event.target.style.borderColor = '#fff';
+      event.target.style.color = '#fff';
+    },
+    blurInput(event) {
+      event.target.style.borderColor = '#ff6600';
+      event.target.style.color = '#ff6600';
+    },
+    async submitForm() {
+      try {
+        let response = await fetch('http://localhost/artgallery/php/submit_message.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams(this.form)
+        });
+        
+        let result = await response.text();
+        
+        if (result === 'success') {
+          alert('Повідомлення успішно відправлено');
+          this.form.name = '';
+          this.form.email = '';
+          this.form.message = '';
+        } else {
+          alert('Помилка при відправленні повідомлення');
+        }
+      } catch (error) {
+        alert('Помилка з\'єднання');
+      }
+    }
+  }
 }
 </script>
 
@@ -198,15 +245,15 @@ body {
   padding: 0.5rem;
   margin: 0.5rem 0;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ff6600;
   background: #222;
-  color: #fff;
+  color: #ff6600;
   width: 50%;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, color 0.3s;
 }
 .contact-form input:focus, .contact-form textarea:focus {
-  border-color: #ff6600;
-  outline: none;
+  border-color: #fff;
+  color: #fff;
 }
 .contact-form textarea {
   height: 10rem;

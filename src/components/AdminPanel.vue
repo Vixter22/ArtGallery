@@ -25,26 +25,47 @@
           </tbody>
         </table>
       </div>
-      <div class="table-wrapper artists-table-wrapper">
-        <h2>Таблиця з художниками</h2>
-        <table class="artists-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Ім'я</th>
-              <th>Дата народження</th>
-              <th>Країна</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="artist in artists" :key="artist.id">
-              <td>{{ artist.id }}</td>
-              <td>{{ artist.name }}</td>
-              <td>{{ artist.bday }}</td>
-              <td>{{ artist.country }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="right-tables">
+        <div class="table-wrapper artists-table-wrapper">
+          <h2 class="tab_h2">Таблиця з художниками</h2>
+          <table class="artists-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Дата народження</th>
+                <th>Країна</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="artist in artists" :key="artist.id">
+                <td>{{ artist.id }}</td>
+                <td>{{ artist.name }}</td>
+                <td>{{ artist.bday }}</td>
+                <td>{{ artist.country }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrapper categories-table-wrapper">
+          <h2 class="tab_h2">Таблиця з категоріями</h2>
+          <table class="categories-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Назва</th>
+                <th>Опис</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="category in categories" :key="category.id">
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="form-container">
@@ -82,6 +103,7 @@ export default {
     return {
       paintings: [],
       artists: [],
+      categories: [],
       newPainting: {
         title: '',
         category: '',
@@ -91,15 +113,16 @@ export default {
       },
       errorMessage: '',
       successMessage: '',
-      sortAscending: true, // Відстеження напрямку сортування для ID
-      sortTitleAscending: true, // Відстеження напрямку сортування для назви
-      sortCategoryAscending: true, // Відстеження напрямку сортування для категорії
-      sortArtistAscending: true // Відстеження напрямку сортування для художника
+      sortAscending: true,
+      sortTitleAscending: true,
+      sortCategoryAscending: true,
+      sortArtistAscending: true
     };
   },
   created() {
     this.fetchPaintings();
     this.fetchArtists();
+    this.fetchCategories();
   },
   methods: {
     fetchPaintings() {
@@ -118,6 +141,15 @@ export default {
         })
         .catch(error => {
           console.error("There was an error fetching the artists!", error);
+        });
+    },
+    fetchCategories() {
+      axios.get('http://localhost/artgallery/php/fetch_categories.php')
+        .then(response => {
+          this.categories = response.data;
+        })
+        .catch(error => {
+          console.error("There was an error fetching the categories!", error);
         });
     },
     addPainting() {
@@ -150,7 +182,7 @@ export default {
       axios.post('http://localhost/artgallery/php/fetch_paintings.php', newPainting)
         .then(response => {
           if (response.data.message === "Картину успішно додано") {
-            this.fetchPaintings(); // Оновлення списку картин після успішного додавання
+            this.fetchPaintings();
             this.errorMessage = '';
             this.successMessage = "Картину успішно додано";
             this.newPainting = {
@@ -160,7 +192,6 @@ export default {
               image: '',
               description: ''
             };
-            // Виклик alert з повідомленням
             alert(this.successMessage);
           } else {
             this.errorMessage = response.data.message || "Помилка при додаванні картини";
@@ -175,9 +206,8 @@ export default {
       axios.post('http://localhost/artgallery/php/fetch_paintings.php', { id: paintingId, _method: 'DELETE' })
         .then(response => {
           if (response.data.message === "Картину успішно видалено") {
-            this.fetchPaintings(); // Оновлення списку картин після успішного видалення
+            this.fetchPaintings();
             this.successMessage = "Картину успішно видалено";
-            // Виклик alert з повідомленням
             alert(this.successMessage);
           } else {
             this.errorMessage = response.data.message || "Помилка при видаленні картини";
@@ -190,13 +220,9 @@ export default {
     },
     sortById() {
       this.paintings.sort((a, b) => {
-        if (this.sortAscending) {
-          return a.id - b.id;
-        } else {
-          return b.id - a.id;
-        }
+        return this.sortAscending ? a.id - b.id : b.id - a.id;
       });
-      this.sortAscending = !this.sortAscending; // Зміна напрямку сортування
+      this.sortAscending = !this.sortAscending;
     },
     sortByTitle() {
       this.paintings.sort((a, b) => {
@@ -212,7 +238,7 @@ export default {
           return 0;
         }
       });
-      this.sortTitleAscending = !this.sortTitleAscending; // Зміна напрямку сортування
+      this.sortTitleAscending = !this.sortTitleAscending;
     },
     sortByCategory() {
       this.paintings.sort((a, b) => {
@@ -228,7 +254,7 @@ export default {
           return 0;
         }
       });
-      this.sortCategoryAscending = !this.sortCategoryAscending; // Зміна напрямку сортування
+      this.sortCategoryAscending = !this.sortCategoryAscending;
     },
     sortByArtist() {
       this.paintings.sort((a, b) => {
@@ -244,13 +270,18 @@ export default {
           return 0;
         }
       });
-      this.sortArtistAscending = !this.sortArtistAscending; // Зміна напрямку сортування
+      this.sortArtistAscending = !this.sortArtistAscending;
     }
   }
 };
 </script>
 
 <style scoped>
+
+.tab_h2{
+  width: 540px;
+}
+
 .h11 {
   padding-left: 500px;
 }
@@ -258,7 +289,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 50px;
+  padding: 0 50px;
 }
 
 .tables-container {
@@ -271,21 +302,33 @@ export default {
   width: 45%;
 }
 
-.artists-table-wrapper {
-  margin-right: 50px; 
+.right-tables {
+  width: 540px;
+}
+
+.artists-table-wrapper, .categories-table-wrapper {
+  margin-top: 20px;
+  padding-bottom: 50px;
 }
 
 .paintings-table {
-  width: 100%;
+  width: 540px;
   border-collapse: collapse;
   background-color: #FFA500;
   color: #FFFFFF;
 }
 
 .artists-table {
-  width: 100%;
+  width: 540px;
   border-collapse: collapse;
   background-color: #1E90FF;
+  color: #FFFFFF;
+}
+
+.categories-table {
+  width: 540px;
+  border-collapse: collapse;
+  background-color: #32CD32;
   color: #FFFFFF;
 }
 
@@ -324,6 +367,23 @@ tr:nth-child(odd) {
 
 .artists-table tr:nth-child(odd) {
   background-color: #1E90FF;
+}
+
+.categories-table th, .categories-table td {
+  border: 1px solid #1f831f; 
+}
+
+.categories-table th {
+  background-color: #1f831f; 
+  color: #FFFFFF;
+}
+
+.categories-table tr:nth-child(even) {
+  background-color: #228B22; 
+}
+
+.categories-table tr:nth-child(odd) {
+  background-color: #32CD32; 
 }
 
 .form-container {
