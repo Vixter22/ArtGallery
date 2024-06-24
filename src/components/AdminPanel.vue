@@ -66,6 +66,29 @@
             </tbody>
           </table>
         </div>
+        <div class="table-wrapper messages-table-wrapper">
+          <h2 class="tab_h2">Таблиця з повідомленнями</h2>
+          <table class="messages-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <th>Повідомлення</th>
+                <th>Дата створення</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="message in messages" :key="message.id">
+                <td>{{ message.id }}</td>
+                <td>{{ message.name }}</td>
+                <td>{{ message.email }}</td>
+                <td>{{ message.message }}</td>
+                <td>{{ message.created_at }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="form-container">
@@ -104,6 +127,7 @@ export default {
       paintings: [],
       artists: [],
       categories: [],
+      messages: [],
       newPainting: {
         title: '',
         category: '',
@@ -123,10 +147,11 @@ export default {
     this.fetchPaintings();
     this.fetchArtists();
     this.fetchCategories();
+    this.fetchMessages();
   },
   methods: {
     fetchPaintings() {
-      axios.get('http://localhost/artgallery/php/fetch_paintings.php') 
+      axios.get('http://localhost/artgallery/php/fetch_paintings.php')
         .then(response => {
           this.paintings = response.data;
         })
@@ -150,6 +175,15 @@ export default {
         })
         .catch(error => {
           console.error("There was an error fetching the categories!", error);
+        });
+    },
+    fetchMessages() {
+      axios.get('http://localhost/artgallery/php/fetch_messages.php')
+        .then(response => {
+          this.messages = response.data;
+        })
+        .catch(error => {
+          console.error("There was an error fetching the messages!", error);
         });
     },
     addPainting() {
@@ -277,14 +311,14 @@ export default {
 </script>
 
 <style scoped>
-
-.tab_h2{
+.tab_h2 {
   width: 540px;
 }
 
 .h11 {
   padding-left: 500px;
 }
+
 .admin-panel {
   display: flex;
   flex-direction: column;
@@ -299,14 +333,17 @@ export default {
 }
 
 .table-wrapper {
-  width: 45%;
+  width: 540px;
+  
 }
 
 .right-tables {
   width: 540px;
 }
 
-.artists-table-wrapper, .categories-table-wrapper {
+.artists-table-wrapper,
+.categories-table-wrapper,
+.messages-table-wrapper {
   margin-top: 20px;
   padding-bottom: 50px;
 }
@@ -314,25 +351,33 @@ export default {
 .paintings-table {
   width: 540px;
   border-collapse: collapse;
-  background-color: #FFA500;
-  color: #FFFFFF;
+  background-color: #ffa500;
+  color: #ffffff;
 }
 
 .artists-table {
   width: 540px;
   border-collapse: collapse;
-  background-color: #1E90FF;
-  color: #FFFFFF;
+  background-color: #1e90ff;
+  color: #ffffff;
 }
 
 .categories-table {
   width: 540px;
   border-collapse: collapse;
-  background-color: #32CD32;
-  color: #FFFFFF;
+  background-color: #32cd32;
+  color: #ffffff;
 }
 
-th, td {
+.messages-table {
+  width: 540px;
+  border-collapse: collapse;
+  background-color: #FFD700;
+  color: #ffffff;
+}
+
+th,
+td {
   border: 1px solid #ff6a06;
   padding: 8px;
   text-align: left;
@@ -340,54 +385,76 @@ th, td {
 
 th {
   background-color: #ff6a06;
-  color: #FFFFFF;
-  cursor: pointer; 
+  color: #ffffff;
+  cursor: pointer;
 }
 
 tr:nth-child(even) {
-  background-color: #FFA500;
+  background-color: #ffa500;
 }
 
 tr:nth-child(odd) {
-  background-color: #FF8C00;
+  background-color: #ff8c00;
 }
 
-.artists-table th, .artists-table td {
+.artists-table th,
+.artists-table td {
   border: 1px solid #466db4;
 }
 
 .artists-table th {
   background-color: #466db4;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .artists-table tr:nth-child(even) {
-  background-color: #4682B4;
+  background-color: #4682b4;
 }
 
 .artists-table tr:nth-child(odd) {
-  background-color: #1E90FF;
+  background-color: #1e90ff;
 }
 
-.categories-table th, .categories-table td {
-  border: 1px solid #1f831f; 
+.categories-table th,
+.categories-table td {
+  border: 1px solid #1f831f;
 }
 
 .categories-table th {
-  background-color: #1f831f; 
-  color: #FFFFFF;
+  background-color: #1f831f;
+  color: #ffffff;
 }
 
 .categories-table tr:nth-child(even) {
-  background-color: #228B22; 
+  background-color: #228b22;
 }
 
 .categories-table tr:nth-child(odd) {
-  background-color: #32CD32; 
+  background-color: #32cd32;
+}
+
+.messages-table th,
+.messages-table td {
+  border: 1px solid #b103dd;
+}
+
+.messages-table th {
+  background-color: #b103dd;
+  color: #ffffff;
+}
+
+.messages-table tr:nth-child(even) {
+  background-color: #b103dd;
+}
+
+.messages-table tr:nth-child(odd) {
+  background-color: #d323ff;
 }
 
 .form-container {
   margin-top: 20px;
+  padding-bottom: 50px;
+  padding-left: 50px;
 }
 
 label {
@@ -395,23 +462,25 @@ label {
   margin: 10px 0 5px;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ff6a06;
   border-radius: 4px;
   background-color: #000000;
-  color: #ff6a06; 
+  color: #ff6a06;
 }
 
-input:focus, textarea:focus {
-  border-color: #FFFFFF;
+input:focus,
+textarea:focus {
+  border-color: #ffffff;
 }
 
 button {
   background-color: #ff6a06;
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
