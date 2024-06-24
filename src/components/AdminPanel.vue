@@ -25,6 +25,27 @@
           </tbody>
         </table>
       </div>
+      <div class="table-wrapper artists-table-wrapper">
+        <h2>Таблиця з художниками</h2>
+        <table class="artists-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ім'я</th>
+              <th>Дата народження</th>
+              <th>Країна</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="artist in artists" :key="artist.id">
+              <td>{{ artist.id }}</td>
+              <td>{{ artist.name }}</td>
+              <td>{{ artist.bday }}</td>
+              <td>{{ artist.country }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="form-container">
       <h2>Додати нову картину</h2>
@@ -33,10 +54,10 @@
         <input type="text" v-model="newPainting.title" required />
 
         <label for="category">Категорія:</label>
-        <input type="number" v-model="newPainting.category" required />
+        <input type="number" v-model="newPainting.category" min="1" max="5" required />
 
         <label for="artist">Художник:</label>
-        <input type="number" v-model="newPainting.artist" required />
+        <input type="number" v-model="newPainting.artist" min="1" max="5" required />
 
         <label for="image">URL зображення:</label>
         <input type="text" v-model="newPainting.image" required />
@@ -60,6 +81,7 @@ export default {
   data() {
     return {
       paintings: [],
+      artists: [],
       newPainting: {
         title: '',
         category: '',
@@ -77,6 +99,7 @@ export default {
   },
   created() {
     this.fetchPaintings();
+    this.fetchArtists();
   },
   methods: {
     fetchPaintings() {
@@ -86,6 +109,15 @@ export default {
         })
         .catch(error => {
           console.error("There was an error fetching the paintings!", error);
+        });
+    },
+    fetchArtists() {
+      axios.get('http://localhost/artgallery/php/fetch_artists.php')
+        .then(response => {
+          this.artists = response.data;
+        })
+        .catch(error => {
+          console.error("There was an error fetching the artists!", error);
         });
     },
     addPainting() {
@@ -103,6 +135,16 @@ export default {
           this.errorMessage = `Missing field: ${field}`;
           return;
         }
+      }
+
+      if (newPainting.category < 1 || newPainting.category > 5) {
+        this.errorMessage = "Категорія повинна бути числом від 1 до 5";
+        return;
+      }
+
+      if (newPainting.artist < 1 || newPainting.artist > 5) {
+        this.errorMessage = "Художник повинен бути числом від 1 до 5";
+        return;
       }
 
       axios.post('http://localhost/artgallery/php/fetch_paintings.php', newPainting)
@@ -229,10 +271,21 @@ export default {
   width: 45%;
 }
 
+.artists-table-wrapper {
+  margin-right: 50px; 
+}
+
 .paintings-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #FFA500;
+  color: #FFFFFF;
+}
+
+.artists-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1E90FF;
   color: #FFFFFF;
 }
 
@@ -254,6 +307,23 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
   background-color: #FF8C00;
+}
+
+.artists-table th, .artists-table td {
+  border: 1px solid #466db4;
+}
+
+.artists-table th {
+  background-color: #466db4;
+  color: #FFFFFF;
+}
+
+.artists-table tr:nth-child(even) {
+  background-color: #4682B4;
+}
+
+.artists-table tr:nth-child(odd) {
+  background-color: #1E90FF;
 }
 
 .form-container {
