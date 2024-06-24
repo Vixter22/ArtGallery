@@ -7,7 +7,7 @@
         <table class="paintings-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th @click="sortById">ID</th>
               <th>Назва картини</th>
               <th>Категорія</th>
               <th>Художник</th>
@@ -68,7 +68,8 @@ export default {
         description: ''
       },
       errorMessage: '',
-      successMessage: ''
+      successMessage: '',
+      sortAscending: true // Відстеження напрямку сортування
     };
   },
   created() {
@@ -114,9 +115,8 @@ export default {
               image: '',
               description: ''
             };
-            setTimeout(() => {
-              this.successMessage = '';
-            }, 3000); // Сповіщення зникає через 3 секунди
+            // Виклик alert з повідомленням
+            alert(this.successMessage);
           } else {
             this.errorMessage = response.data.message || "Помилка при додаванні картини";
           }
@@ -131,6 +131,9 @@ export default {
         .then(response => {
           if (response.data.message === "Картину успішно видалено") {
             this.fetchPaintings(); // Оновлення списку картин після успішного видалення
+            this.successMessage = "Картину успішно видалено";
+            // Виклик alert з повідомленням
+            alert(this.successMessage);
           } else {
             this.errorMessage = response.data.message || "Помилка при видаленні картини";
           }
@@ -139,6 +142,16 @@ export default {
           console.error("There was an error deleting the painting!", error);
           this.errorMessage = "Помилка при видаленні картини";
         });
+    },
+    sortById() {
+      this.paintings.sort((a, b) => {
+        if (this.sortAscending) {
+          return a.id - b.id;
+        } else {
+          return b.id - a.id;
+        }
+      });
+      this.sortAscending = !this.sortAscending; // Зміна напрямку сортування
     }
   }
 };
@@ -181,6 +194,7 @@ th, td {
 th {
   background-color: #ff6a06;
   color: #FFFFFF;
+  cursor: pointer; /* Вказівник курсора для заголовків стовпців */
 }
 
 tr:nth-child(even) {
@@ -204,8 +218,14 @@ input, textarea {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ff6a06;
   border-radius: 4px;
+  background-color: #000000;
+  color: #ff6a06; 
+}
+
+input:focus, textarea:focus {
+  border-color: #FFFFFF;
 }
 
 button {
