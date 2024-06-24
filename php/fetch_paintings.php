@@ -1,7 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
@@ -20,33 +20,48 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    // Перевірка всіх необхідних полів
-    $requiredFields = ['title', 'category', 'artist', 'image', 'description'];
-    foreach ($requiredFields as $field) {
-        if (!isset($data[$field])) {
-            error_log("Missing field: " . $field, 3, "php_error.log");
-            echo json_encode(["message" => "Failed to add painting: missing field " . $field]);
-            exit;
+    if (isset($data['_method']) && $data['_method'] === 'DELETE') {
+        $id = $data['id'];
+        $stmt = $conn->prepare("DELETE FROM paintings WHERE id = ?");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            echo json_encode(["message" => "Картину успішно видалено"]);
+        } else {
+            error_log("Database delete failed: " . $stmt->error, 3, "php_error.log");
+            echo json_encode(["message" => "Помилка при видаленні картини"]);
         }
-    }
 
-    $title = $data['title'];
-    $category = $data['category'];
-    $artist = $data['artist'];
-    $image = $data['image'];
-    $description = $data['description'];
-
-    $stmt = $conn->prepare("INSERT INTO paintings (title, category, artist, image, description) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $title, $category, $artist, $image, $description);
-
-    if ($stmt->execute()) {
-        echo json_encode(["message" => "Painting added successfully"]);
+        $stmt->close();
     } else {
-        error_log("Database insert failed: " . $stmt->error, 3, "php_error.log");
-        echo json_encode(["message" => "Failed to add painting"]);
-    }
+        // Обробка додавання нової картини
+        $requiredFields = ['title', 'category', 'artist', 'image', 'description'];
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field])) {
+                error_log("Missing field: " . $field, 3, "php_error.log");
+                echo json_encode(["message" => "Failed to add painting: missing field " . $field]);
+                exit;
+            }
+        }
 
-    $stmt->close();
+        $title = $data['title'];
+        $category = $data['category'];
+        $artist = $data['artist'];
+        $image = $data['image'];
+        $description = $data['description'];
+
+        $stmt = $conn->prepare("INSERT INTO paintings (title, category, artist, image, description) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $title, $category, $artist, $image, $description);
+
+        if ($stmt->execute()) {
+            echo json_encode(["message" => "Картину успішно додано"]);
+        } else {
+            error_log("Database insert failed: " . $stmt->error, 3, "php_error.log");
+            echo json_encode(["message" => "Failed to add painting"]);
+        }
+
+        $stmt->close();
+    }
 } else {
     $sql = "SELECT paintings.id, paintings.title, category.name as category, artist.name as artist 
             FROM paintings 

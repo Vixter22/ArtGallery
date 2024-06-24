@@ -11,6 +11,7 @@
               <th>Назва картини</th>
               <th>Категорія</th>
               <th>Художник</th>
+              <th>Дії</th>
             </tr>
           </thead>
           <tbody>
@@ -19,6 +20,7 @@
               <td>{{ painting.title }}</td>
               <td>{{ painting.category }}</td>
               <td>{{ painting.artist }}</td>
+              <td><button @click="deletePainting(painting.id)">Видалити</button></td>
             </tr>
           </tbody>
         </table>
@@ -44,6 +46,7 @@
 
         <button type="submit">Додати картину</button>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
       </form>
     </div>
   </div>
@@ -64,62 +67,80 @@ export default {
         image: '',
         description: ''
       },
-      errorMessage: ''
+      errorMessage: '',
+      successMessage: ''
     };
   },
   created() {
     this.fetchPaintings();
   },
   methods: {
-  fetchPaintings() {
-    axios.get('http://localhost/artgallery/php/fetch_paintings.php') 
-      .then(response => {
-        this.paintings = response.data;
-      })
-      .catch(error => {
-        console.error("There was an error fetching the paintings!", error);
-      });
-  },
-  addPainting() {
-    const newPainting = {
-      title: this.newPainting.title,
-      category: this.newPainting.category,
-      artist: this.newPainting.artist,
-      image: this.newPainting.image,
-      description: this.newPainting.description
-    };
+    fetchPaintings() {
+      axios.get('http://localhost/artgallery/php/fetch_paintings.php') 
+        .then(response => {
+          this.paintings = response.data;
+        })
+        .catch(error => {
+          console.error("There was an error fetching the paintings!", error);
+        });
+    },
+    addPainting() {
+      const newPainting = {
+        title: this.newPainting.title,
+        category: this.newPainting.category,
+        artist: this.newPainting.artist,
+        image: this.newPainting.image,
+        description: this.newPainting.description
+      };
 
-    // Перевірка наявності всіх полів перед відправленням
-    const requiredFields = ['title', 'category', 'artist', 'image', 'description'];
-    for (const field of requiredFields) {
-      if (!newPainting[field]) {
-        this.errorMessage = `Missing field: ${field}`;
-        return;
-      }
-    }
-
-    axios.post('http://localhost/artgallery/php/fetch_paintings.php', newPainting)
-      .then(response => {
-        if (response.data.message === "Painting added successfully") {
-          this.fetchPaintings(); // Оновлення списку картин після успішного додавання
-          this.errorMessage = '';
-          this.newPainting = {
-            title: '',
-            category: '',
-            artist: '',
-            image: '',
-            description: ''
-          };
-        } else {
-          this.errorMessage = response.data.message || "Failed to add painting";
+      const requiredFields = ['title', 'category', 'artist', 'image', 'description'];
+      for (const field of requiredFields) {
+        if (!newPainting[field]) {
+          this.errorMessage = `Missing field: ${field}`;
+          return;
         }
-      })
-      .catch(error => {
-        console.error("There was an error adding the painting!", error);
-        this.errorMessage = "Failed to add painting";
-      });
+      }
+
+      axios.post('http://localhost/artgallery/php/fetch_paintings.php', newPainting)
+        .then(response => {
+          if (response.data.message === "Картину успішно додано") {
+            this.fetchPaintings(); // Оновлення списку картин після успішного додавання
+            this.errorMessage = '';
+            this.successMessage = "Картину успішно додано";
+            this.newPainting = {
+              title: '',
+              category: '',
+              artist: '',
+              image: '',
+              description: ''
+            };
+            setTimeout(() => {
+              this.successMessage = '';
+            }, 3000); // Сповіщення зникає через 3 секунди
+          } else {
+            this.errorMessage = response.data.message || "Помилка при додаванні картини";
+          }
+        })
+        .catch(error => {
+          console.error("There was an error adding the painting!", error);
+          this.errorMessage = "Помилка при додаванні картини";
+        });
+    },
+    deletePainting(paintingId) {
+      axios.post('http://localhost/artgallery/php/fetch_paintings.php', { id: paintingId, _method: 'DELETE' })
+        .then(response => {
+          if (response.data.message === "Картину успішно видалено") {
+            this.fetchPaintings(); // Оновлення списку картин після успішного видалення
+          } else {
+            this.errorMessage = response.data.message || "Помилка при видаленні картини";
+          }
+        })
+        .catch(error => {
+          console.error("There was an error deleting the painting!", error);
+          this.errorMessage = "Помилка при видаленні картини";
+        });
+    }
   }
-}
 };
 </script>
 
@@ -202,6 +223,11 @@ button:hover {
 
 .error-message {
   color: red;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
   margin-top: 10px;
 }
 </style>
