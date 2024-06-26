@@ -7,13 +7,13 @@
         </router-link>
       </div>
       <div class="navbar-right">
-        <ul>
+        <ul :class="{ active: menuActive }">
           <li><router-link to="/" exact>Головна</router-link></li>
           <li @mouseover="showDropdown" @mouseleave="hideDropdown" class="dropdown">
             <router-link to="/HomeGallery">Картини</router-link>
             <ul v-if="dropdownVisible" class="dropdown-content">
               <li><router-link to="/LandscapeGallery">Пейзаж</router-link></li>
-              <li><router-link to="/PortraitGallery">Портрет</router-link></li>
+              <li><router-link to="/PortraitGallety">Портрет</router-link></li>
               <li><router-link to="/AbstractGallery">Абстракція</router-link></li>
               <li><router-link to="/StilllifeGallery">Натюрморт</router-link></li>
               <li><router-link to="/SurrealismGallery">Сюрреалізм</router-link></li>
@@ -22,6 +22,7 @@
           <li><router-link to="/AboutGallery">Художники</router-link></li>
           <li><a @click.prevent="toggleProfile" href="#">Профіль</a></li>
         </ul>
+        <button class="burger-menu" @click="toggleMenu">☰</button>
       </div>
     </div>
     <div v-if="showProfilePanel" class="profile-panel">
@@ -41,7 +42,7 @@
       </div>
       <div v-else class="admin-logout">
         <router-link to="/admin" class="buttonA">Адмін панель</router-link>
-        <button @click="logout" >Вийти</button>
+        <button @click="logout">Вийти</button>
       </div>
     </div>
   </nav>
@@ -60,7 +61,8 @@ export default {
       username: '',
       password: '',
       errorMessage: '',
-      passwordFieldType: 'password'
+      passwordFieldType: 'password',
+      menuActive: false
     };
   },
   computed: {
@@ -107,6 +109,9 @@ export default {
     },
     togglePasswordVisibility() {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    },
+    toggleMenu() {
+      this.menuActive = !this.menuActive;
     }
   }
 }
@@ -186,6 +191,15 @@ nav {
 .dropdown:hover .dropdown-content {
   display: block; 
 }
+.burger-menu {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  padding-right: 20px;
+}
 .profile-panel {
   position: absolute;
   right: 0;
@@ -219,7 +233,7 @@ nav {
   cursor: pointer;
   color: #ff6600; 
 }
-.profile-panel button{
+.profile-panel button {
   display: block;
   width: 100%;
   padding: 0.5rem;
@@ -230,8 +244,7 @@ nav {
   text-align: center;
   text-decoration: none;
 }
-
-.profile-panel .buttonA{
+.profile-panel .buttonA {
   display: block;
   width: 284px;
   padding: 0.5rem;
@@ -242,7 +255,6 @@ nav {
   text-align: center;
   text-decoration: none;
 }
-
 .profile-panel .button:hover {
   background: #e55a00;
 }
@@ -262,8 +274,70 @@ nav {
   color: red;
   margin: 0;
 }
-.admin-logout{
+.admin-logout {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .navbar-right ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    bottom: -100%; 
+    left: 0;
+    background-color: #000;
+    padding: 0;
+    margin: 0;
+    transition: bottom 0.5s;
+  }
+  .navbar-right ul.active {
+    display: flex;
+    bottom: 0;
+  }
+  .burger-menu {
+    display: block;
+  }
+  .navbar-right ul li {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+  }
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+  }
+  .profile-panel {
+    width: calc(100% - 2rem);
+    right: 1rem;
+    margin-top: 18px;
+  }
+  .password-container input {
+  width: 362px;
+  }
+  .profile-panel button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+.profile-panel .buttonA {
+  display: block;
+  width: 362px;
+  padding: 0.5rem;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
 }
 </style>

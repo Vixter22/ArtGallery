@@ -500,4 +500,28 @@ button:hover {
   color: green;
   margin-top: 10px;
 }
+
+@media (max-width: 768px) {
+  .tables-container {
+    flex-direction: column;
+  }
+  
+  .table-wrapper, 
+  .right-tables {
+    width: 100%;
+  }
+  
+  .tab_h2 {
+    width: 100%;
+  }
+  
+  .h11 {
+    padding-left: 0;
+    text-align: center;
+  }
+  
+  .form-container {
+    padding-left: 0;
+  }
+}
 </style>

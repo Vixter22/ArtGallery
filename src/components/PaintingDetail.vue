@@ -78,12 +78,12 @@ export default {
 .painting-image {
   float: left;
   margin: 0 20px 20px 0;
-  width: 500px; 
-  height: 400px; 
+  width: 500px;
+  height: 400px;
   object-fit: cover;
   border: 1px solid #ff6600;
   border-radius: 4px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .painting-info h1 {
@@ -95,16 +95,16 @@ export default {
 .actor {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #aaa; /* Змінено колір */
+  color: #aaa;
   margin: 10px 0;
   word-break: break-word;
-  text-align: center; 
+  text-align: center;
 }
 
 .actor span {
   cursor: pointer;
-  color: #aaa; /* Колір для посилання */
-  text-decoration: underline; /* Додаємо підкреслення */
+  color: #aaa;
+  text-decoration: underline;
 }
 
 .description {
@@ -113,24 +113,24 @@ export default {
   color: #aaa;
   margin: 10px 0;
   word-break: break-word;
-  text-align: justify; 
+  text-align: justify;
 }
 
 .modal {
-  display: block; 
-  position: fixed; 
-  z-index: 1; 
+  display: block;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; 
-  background-color: rgb(0, 0, 0); 
-  background-color: rgba(0, 0, 0, 0.9); 
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .modal-content {
-  margin: 60px auto; 
+  margin: 60px auto;
   display: block;
   width: 80%;
   max-width: 700px;
@@ -144,14 +144,14 @@ export default {
   font-size: 40px;
   font-weight: bold;
   transition: 0.3s;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
   color: #bbb;
   text-decoration: none;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .caption {
@@ -162,10 +162,25 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .painting-detail-container {
+    padding: 20px;
+  }
+
+  .painting-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .painting-image {
     float: none;
     margin: 0 0 20px 0;
-    max-width: 100%;
+    width: 100%;
+    height: auto;
+  }
+
+  .painting-info {
+    text-align: center;
   }
 }
 </style>

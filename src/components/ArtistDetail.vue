@@ -121,10 +121,44 @@ export default {
   color: #aaa;
   text-decoration: underline;
   font-weight: bold;
-  font-size: 1.2rem; /* Збільшуємо розмір тексту */
+  font-size: 1.2rem;
 }
 
 .paintings-list li a:hover {
   text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .artist-detail-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .artist-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .artist-image {
+    float: none;
+    margin: 0 0 20px 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .artist-info {
+    text-align: center;
+  }
+
+  .paintings-list ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .paintings-list li {
+    width: 100%;
+    margin: 10px 0;
+  }
 }
 </style>

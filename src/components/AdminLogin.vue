@@ -24,7 +24,7 @@ export default {
     return {
       username: '',
       password: '',
-      isLoginVisible: true // Відображаємо форму входу за замовчуванням
+      isLoginVisible: true
     };
   },
   computed: {
@@ -58,5 +58,53 @@ export default {
   background-color: #fff;
   box-shadow: -2px 0 5px rgba(0,0,0,0.5);
   z-index: 1001;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .admin-login-panel {
+    width: 100%;
+    height: 100%;
+    position: static;
+    box-shadow: none;
+    padding: 20px;
+  }
+
+  form div {
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+  }
+
 }
 </style>

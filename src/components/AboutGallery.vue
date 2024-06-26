@@ -1,7 +1,7 @@
 <template>
   <div class="gallery-container">
     <div class="header-container">
-      <h1>Наші Художники</h1>
+      <h1 id="hder">Наші Художники</h1>
       <div class="search-container">
         <input type="text" v-model="searchQuery" @input="searchArtists" placeholder="Пошук художників за ім'ям">
         <ul class="search-results" v-if="searchResults.length">
@@ -73,8 +73,8 @@ export default {
 
 <style>
 body {
-  background-color: #111; 
-  color: #fff; 
+  background-color: #111;
+  color: #fff;
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -87,34 +87,36 @@ body {
 
 .header-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
+  padding-right: 40px;
   padding-left: 500px;
-  padding-right: 55px;
 }
 
 .search-container {
   position: relative;
-  width: 200px; 
+  width: 200px;
 }
 
 .search-container input {
   width: 100%;
-  padding: 0.5rem; 
-  background-color: #000; 
-  color: #ff6600; 
-  border: 2px solid #ff6600; 
+  padding: 0.5rem;
+  background-color: #000;
+  color: #ff6600;
+  border: 2px solid #ff6600;
   border-radius: 5px;
   font-size: 1rem;
 }
 
 .search-container input::placeholder {
-  color: #aaa; 
+  color: #aaa;
 }
 
 .search-container input:focus {
-  outline: none; 
-  border-color: #ffffff; 
+  outline: none;
+  border-color: #ffffff;
 }
 
 .search-results {
@@ -191,5 +193,21 @@ body {
 .artist-info p {
   margin: 5px 0;
   color: #aaa;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+
+  .artists-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-container {
+    width: 100%;
+  }
 }
 </style>

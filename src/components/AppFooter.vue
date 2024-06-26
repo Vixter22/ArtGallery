@@ -61,11 +61,15 @@ footer {
   justify-content: space-between;
   width: 80%;
   max-width: 1200px;
+  flex-wrap: wrap; 
+  padding-right: 50px; 
 }
 .footer-left {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 2; 
+  min-width: 250px;
 }
 .logo-section {
   display: flex;
@@ -93,10 +97,13 @@ footer {
 }
 .contact-info {
   text-align: left;
-  margin-left: 3 rem; 
+  margin-left: 3rem; 
 }
 .footer-center, .footer-right {
   text-align: left;
+  flex: 1; 
+  min-width: 250px; 
+  margin-left: 2rem; 
 }
 .footer-center h2, .footer-right h2 {
   font-size: 1.2rem;
@@ -123,5 +130,23 @@ footer {
 .footer-bottom {
   margin-top: 1rem;
   text-align: center;
+}
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column; 
+    align-items: center;
+    padding-right: 0;
+  }
+  .footer-left, .footer-center, .footer-right {
+    text-align: center; 
+    align-items: center; 
+    margin-bottom: 1rem; 
+  }
+  .contact-info {
+    margin-left: 0;
+  }
+  .footer-center, .footer-right {
+    margin-left: 0; 
+  }
 }
 </style>

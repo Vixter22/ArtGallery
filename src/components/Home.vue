@@ -174,6 +174,7 @@ body {
 .history-content {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .gallery-image {
   max-width: 100%;
@@ -276,6 +277,7 @@ body {
   align-items: center;
   padding: 2rem;
   background-color: #222;
+  flex-wrap: wrap;
 }
 .address {
   flex: 1;
@@ -293,5 +295,43 @@ iframe {
   flex: 2;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+  .hero {
+    height: 40vh;
+  }
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .button {
+    padding: 0.5rem 1rem;
+  }
+  .history-content {
+    flex-direction: column;
+  }
+  .gallery-image {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  .news-items {
+    grid-template-columns: 1fr;
+  }
+  .contact-form input, .contact-form textarea {
+    width: 80%;
+  }
+  .location {
+    flex-direction: column;
+  }
+  .address {
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+  iframe {
+    max-width: 100%;
+  }
 }
 </style>

@@ -54,10 +54,10 @@ export default {
   min-height: 100vh;
 }
 
-#Lend {
+#Land {
   text-align: center;
   margin-bottom: 40px;
-  color: #343a40;
+  color: #ffffff;
 }
 
 .paintings-grid {
@@ -103,5 +103,15 @@ export default {
 .painting-info p {
   margin: 5px 0;
   color: #aaa;
+}
+
+@media (max-width: 768px) {
+  .paintings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .painting img {
+    height: 200px;
+  }
 }
 </style>
